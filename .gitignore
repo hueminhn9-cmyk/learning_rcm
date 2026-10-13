@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Large files (>100MB exceeds GitHub limits)
+dataset/studentVle.csv
+
+# Temporary debug and log files
+babel_check.txt
+babel_err.txt
+edge_console.txt
+*.log
+
+# Editor & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
