@@ -11,20 +11,264 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('aegis_theme') || 'light';
+      if (savedTheme === 'light') {
+        document.documentElement.classList.add('theme-light');
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('theme-light');
+      }
+    })();
+  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* ============================================================
+       AEGIS LEARN ADMIN - EYE-CARE LIGHT THEME
+       ============================================================ */
+    html.theme-light body,
+    body.theme-light {
+      background-color: #f8fafc !important;
+      color: #1e293b !important;
+    }
+
+    /* Scrollbars */
+    .theme-light ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    .theme-light ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .theme-light ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    /* Nền chính */
+    .theme-light .bg-slate-950:not(.fixed),
+    .theme-light [class*="bg-slate-950"]:not(.fixed) {
+      background-color: #f8fafc !important;
+      color: #1e293b !important;
+    }
+
+    /* Header & Đường viền */
+    .theme-light [class*="border-slate-800"],
+    .theme-light [class*="border-slate-700"],
+    .theme-light [class*="divide-slate-800"] {
+      border-color: #e2e8f0 !important;
+    }
+
+    /* Metric Cards & Main Cards */
+    .theme-light .bg-slate-900:not(.fixed),
+    .theme-light [class*="bg-slate-900"]:not(.fixed) {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05), 0 1px 3px 0 rgba(15, 23, 42, 0.03) !important;
+    }
+
+    /* Nested Sub-Cards / Blocks */
+    .theme-light .bg-slate-800:not(.fixed),
+    .theme-light [class*="bg-slate-800"]:not(.fixed) {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+
+    /* Typography & Hierarchy trên nền thẻ sáng */
+    .theme-light h1.text-white,
+    .theme-light h2.text-white,
+    .theme-light h3.text-white,
+    .theme-light h4.text-white,
+    .theme-light h5.text-white,
+    .theme-light h6.text-white,
+    .theme-light p.text-white,
+    .theme-light span.text-white:not(button *):not(a *):not([class*="bg-"]):not([class*="from-"]),
+    .theme-light div.text-white:not(button *):not(a *):not([class*="bg-"]):not([class*="from-"]) {
+      color: #0f172a !important;
+    }
+
+    /* BẢO ĐẢM CHỮ TRẮNG NỔI BẬT 100% CHO CÁC NÚT BẤM VÀ PHẦN TỬ NỀN MÀU ĐẬM */
+    .theme-light button[class*="from-indigo"],
+    .theme-light button[class*="to-violet"],
+    .theme-light button[class*="bg-indigo"],
+    .theme-light a[class*="bg-indigo"],
+    .theme-light button[class*="bg-emerald"],
+    .theme-light button[class*="bg-violet"],
+    .theme-light button[class*="bg-rose"],
+    .theme-light button[class*="from-indigo"] *,
+    .theme-light button[class*="to-violet"] *,
+    .theme-light button[class*="bg-indigo"] *,
+    .theme-light a[class*="bg-indigo"] *,
+    .theme-light button[class*="bg-emerald"] *,
+    .theme-light button[class*="bg-rose"] * {
+      color: #ffffff !important;
+    }
+    .theme-light .text-slate-100,
+    .theme-light .text-slate-200 {
+      color: #1e293b !important;
+    }
+    .theme-light .text-slate-300 {
+      color: #334155 !important;
+    }
+    .theme-light .text-slate-400 {
+      color: #64748b !important;
+    }
+    .theme-light .text-slate-500 {
+      color: #94a3b8 !important;
+    }
+    .theme-light .text-indigo-400,
+    .theme-light .text-indigo-300 {
+      color: #4f46e5 !important;
+    }
+    .theme-light .text-emerald-400 {
+      color: #059669 !important;
+    }
+    .theme-light .text-amber-400,
+    .theme-light .text-amber-300 {
+      color: #d97706 !important;
+    }
+    .theme-light .text-rose-400 {
+      color: #e11d48 !important;
+    }
+    .theme-light .text-violet-400 {
+      color: #7c3aed !important;
+    }
+
+    /* Gradients */
+    .theme-light [class*="from-slate-900"],
+    .theme-light [class*="via-slate-900"],
+    .theme-light [class*="to-indigo-950"],
+    .theme-light [class*="to-slate-900"] {
+      background-image: none !important;
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+    }
+
+    /* Form Controls */
+    .theme-light input,
+    .theme-light select,
+    .theme-light textarea {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+    }
+    .theme-light input:focus,
+    .theme-light textarea:focus {
+      border-color: #6366f1 !important;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
+    }
+    .theme-light input::placeholder,
+    .theme-light textarea::placeholder {
+      color: #94a3b8 !important;
+    }
+
+    /* Progress bar tracks */
+    .theme-light [class*="w-full bg-slate-800 h-"] {
+      background-color: #e2e8f0 !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    /* Tables */
+    .theme-light table th {
+      background-color: #f8fafc !important;
+      color: #475569 !important;
+      border-color: #e2e8f0 !important;
+    }
+    .theme-light table td {
+      border-color: #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+    .theme-light table tr:hover td {
+      background-color: #f8fafc !important;
+    }
+
+    /* Modals */
+    .theme-light .fixed.inset-0.bg-slate-950\/85,
+    .theme-light .fixed.inset-0[class*="bg-slate-950"] {
+      background-color: rgba(15, 23, 42, 0.45) !important;
+      backdrop-filter: blur(8px) !important;
+    }
+    .theme-light .fixed .bg-slate-900,
+    .theme-light .fixed [class*="bg-slate-900"] {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.2) !important;
+    }
+    .theme-light .fixed .bg-slate-950,
+    .theme-light .fixed [class*="bg-slate-950"] {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+    }
   </style>
 </head>
+
 <body class="bg-slate-950 text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
 
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
     const API_BASE_URL = "/api/v1";
 
+    // Helper: Quản lý JWT Token Quản trị viên & Tự động xác thực an toàn
+    async function adminFetch(url, options = {}) {
+      let token = localStorage.getItem("aegis_admin_jwt");
+      if (!token) {
+        try {
+          const authRes = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: "admin@aegislearn.edu.vn", password: "admin" })
+          });
+          if (authRes.ok) {
+            const authData = await authRes.json();
+            token = authData.access_token;
+            localStorage.setItem("aegis_admin_jwt", token);
+          }
+        } catch (e) {
+          console.warn("Lỗi auto-login admin token:", e);
+        }
+      }
+      const headers = {
+        "Content-Type": "application/json",
+        ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+        ...(options.headers || {})
+      };
+      return fetch(url, { ...options, headers });
+    }
+
+
     function AdminDashboardApp() {
+      // Theme State (Default: Eye-Care Light Mode)
+      const [theme, setTheme] = useState(() => localStorage.getItem('aegis_theme') || 'light');
+
+      useEffect(() => {
+        if (theme === 'dark') {
+          document.documentElement.classList.remove('theme-light');
+          document.documentElement.classList.add('dark');
+          document.body.classList.remove('theme-light');
+          document.body.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('theme-light');
+          document.body.classList.remove('dark');
+          document.body.classList.add('theme-light');
+        }
+        localStorage.setItem('aegis_theme', theme);
+      }, [theme]);
+
+      const toggleTheme = () => {
+        setTheme(prev => prev === 'light' ? 'dark' : 'light');
+      };
+
       // General Stats
       const [stats, setStats] = useState({
         total_students: 1250,
@@ -89,13 +333,13 @@
 
       const fetchAdminData = async () => {
         try {
-          const statsRes = await fetch(`${API_BASE_URL}/admin/stats`);
+          const statsRes = await adminFetch(`${API_BASE_URL}/admin/stats`);
           if (statsRes.ok) setStats(await statsRes.json());
 
-          const historyRes = await fetch(`${API_BASE_URL}/admin/recommendation-config/history`);
+          const historyRes = await adminFetch(`${API_BASE_URL}/admin/recommendation-config/history`);
           if (historyRes.ok) setConfigHistory(await historyRes.json());
 
-          const fbRes = await fetch(`${API_BASE_URL}/admin/feedbacks`);
+          const fbRes = await adminFetch(`${API_BASE_URL}/admin/feedbacks`);
           if (fbRes.ok) setFeedbacks(await fbRes.json());
         } catch (e) {
           console.log("Using fallback admin data");
@@ -109,7 +353,7 @@
         setIsAiGradingLoading(true);
         setActiveGradeItem(item);
         try {
-          const res = await fetch(`${API_BASE_URL}/admin/ai/suggest-grading`, {
+          const res = await adminFetch(`${API_BASE_URL}/admin/ai/suggest-grading`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -155,7 +399,7 @@
       const handleConfirmGrade = async () => {
         if (!activeGradeItem) return;
         try {
-          await fetch(`${API_BASE_URL}/admin/grading/submit`, {
+          await adminFetch(`${API_BASE_URL}/admin/grading/submit`, {
             method: "POST", headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               queue_id: activeGradeItem.queue_id, admin_id: 99,
@@ -180,7 +424,7 @@
       const handleAiAnalyzeFeedback = async (fb) => {
         setIsAiFeedbackLoading(true);
         try {
-          const res = await fetch(`${API_BASE_URL}/admin/ai/analyze-feedback`, {
+          const res = await adminFetch(`${API_BASE_URL}/admin/ai/analyze-feedback`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -226,7 +470,7 @@
 
       const handleApplyFeedbackResolution = async (fbId, draftReply) => {
         try {
-          await fetch(`${API_BASE_URL}/admin/feedbacks/resolve`, {
+          await adminFetch(`${API_BASE_URL}/admin/feedbacks/resolve`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -248,7 +492,7 @@
       const handleAiAutoTune = async () => {
         setIsAiAutoTuneLoading(true);
         try {
-          const res = await fetch(`${API_BASE_URL}/admin/ai/auto-tune-weights`, {
+          const res = await adminFetch(`${API_BASE_URL}/admin/ai/auto-tune-weights`, {
             method: "POST",
             headers: { "Content-Type": "application/json" }
           });
@@ -289,7 +533,7 @@
         });
 
         try {
-          const res = await fetch(`${API_BASE_URL}/admin/recommendation-config/update`, {
+          const res = await adminFetch(`${API_BASE_URL}/admin/recommendation-config/update`, {
             method: "POST", headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               config_key: "RECOMMENDATION_WEIGHTS",
@@ -319,7 +563,7 @@
       const handleAiGenerateRemedialQuiz = async (topicCode, topicTitle) => {
         setIsAiRemedialLoading(true);
         try {
-          const res = await fetch(`${API_BASE_URL}/admin/ai/generate-remedial-quiz`, {
+          const res = await adminFetch(`${API_BASE_URL}/admin/ai/generate-remedial-quiz`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -438,7 +682,7 @@
       const handleSaveConfig = async (e) => {
         e.preventDefault();
         try {
-          const res = await fetch(`${API_BASE_URL}/admin/recommendation-config/update`, {
+          const res = await adminFetch(`${API_BASE_URL}/admin/recommendation-config/update`, {
             method: "POST", headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               config_key: "RECOMMENDATION_WEIGHTS", description: "Cập nhật thủ công",
@@ -474,6 +718,15 @@
               </h1>
             </div>
             <div className="flex items-center gap-3">
+              {/* Theme Switcher Button */}
+              <button
+                onClick={toggleTheme}
+                title="Chuyển đổi giao diện Sáng / Tối"
+                className="text-xs bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 font-medium shadow-sm hover:scale-105 active:scale-95"
+              >
+                <span className="text-sm">{theme === 'light' ? '🌙' : '☀️'}</span>
+                <span>{theme === 'light' ? 'Giao diện Tối' : 'Giao diện Sáng'}</span>
+              </button>
               <a href="/" className="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-indigo-600/30">
                 <i data-lucide="compass" className="w-4 h-4"></i> Sang Trang Sinh viên (Student UI) →
               </a>

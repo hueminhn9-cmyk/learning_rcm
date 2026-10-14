@@ -1,10 +1,19 @@
-import json
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
-from models import Question, QuestionType
+# -*- coding: utf-8 -*-
+"""
+Database Seeder: Additional Practice & Exam Questions
+UTF-8 Encoded for Cross-Platform Vietnamese Terminal Compatibility
+"""
+import sys
+try:
+    sys.stdout.reconfigure(encoding='utf-8')
+except Exception:
+    pass
 
-DATABASE_URL = "sqlite:///./learning_app.db"
-engine = create_engine(DATABASE_URL, echo=False)
+import json
+from sqlalchemy import select
+from models import Question, QuestionType
+from database import SessionLocal
+
 
 new_questions = [
     # === TOPIC 101: Python cơ bản (Thêm 10 câu) ===
@@ -368,19 +377,30 @@ new_questions = [
     }
 ]
 
-with Session(engine) as session:
+with SessionLocal() as session:
     added_count = 0
+    skipped_count = 0
     for q_data in new_questions:
-        q = Question(
-            topic_id=q_data["topic_id"],
-            content=q_data["content"],
-            question_type=QuestionType.MULTIPLE_CHOICE,
-            options=q_data["options"],
-            correct_answer=q_data["correct"],
-            explanation=q_data["explanation"],
-            difficulty_level=q_data["difficulty"]
+        # Kiểm tra trùng lặp trước khi thêm để an toàn khi chạy nhiều lần (SQLAlchemy 2.0)
+        stmt = select(Question).where(
+            Question.topic_id == q_data["topic_id"],
+            Question.content == q_data["content"]
         )
-        session.add(q)
-        added_count += 1
+        existing = session.execute(stmt).scalar_one_or_none()
+        if not existing:
+            q = Question(
+                topic_id=q_data["topic_id"],
+                content=q_data["content"],
+                question_type=QuestionType.MULTIPLE_CHOICE,
+                options=q_data["options"],
+                correct_answer=q_data["correct"],
+                explanation=q_data["explanation"],
+                difficulty_level=q_data["difficulty"]
+            )
+            session.add(q)
+            added_count += 1
+        else:
+            skipped_count += 1
     session.commit()
-    print(f"SUCCESS: Đã nạp thành công {added_count} câu hỏi chất lượng cao mới vào CSDL!")
+    print(f"SUCCESS: Đã nạp thành công {added_count} câu hỏi chất lượng cao mới vào CSDL (Bỏ qua {skipped_count} câu đã tồn tại)!")
+

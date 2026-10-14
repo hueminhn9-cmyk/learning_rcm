@@ -423,6 +423,7 @@ class AIChatResponseDTO(BaseModel):
     suggested_followups: List[str] = Field(default=[])
     topic_id: Optional[int] = None
     model_used: str = "Aegis AI EdTech Assistant v2.0"
+    sources: Optional[List[Dict[str, str]]] = Field(default_factory=list, description="Nguồn trích dẫn Google / Web Docs có kiểm chứng [title, url, snippet]")
 
 
 # ==========================================
@@ -557,5 +558,180 @@ class QuizAttemptDetailDTO(BaseModel):
     created_at: str
     review_questions: List[QuestionReviewDetailedDTO]
 
+
+# ==========================================
+# 16. HIGH-SCORE ENGINE SCHEMAS (SCORE COCKPIT, ERROR VAULT, CRAMMING, FLASHCARDS)
+# ==========================================
+class ScorePredictionTopicItemDTO(BaseModel):
+    topic_id: int
+    code: str
+    title: str
+    mastery_percentage: float
+    impact_points: float
+    status: str = Field("NEEDS_IMPROVEMENT", description="STRONG | NEEDS_IMPROVEMENT | CRITICAL_GAP")
+
+
+class ScorePredictionResponseDTO(BaseModel):
+    current_predicted_score: float = Field(7.4, description="Điểm số dự báo thi hiện tại (thang 10)")
+    target_score: float = Field(9.0, description="Mục tiêu điểm số (thang 10)")
+    grade_letter: str = Field("B+", description="Xếp loại học lực hiện tại")
+    target_grade: str = Field("A", description="Mục tiêu xếp loại")
+    points_gap: float = Field(1.6, description="Số điểm cần bù đắp để đạt mục tiêu")
+    days_remaining: int = Field(14, description="Số ngày đếm ngược đến kỳ thi")
+    total_quizzes_taken: int = Field(0)
+    topics_radar: List[ScorePredictionTopicItemDTO] = Field(default_factory=list)
+    quick_wins: List[str] = Field(default_factory=list)
+    exam_readiness_percentage: float = Field(74.0)
+
+
+class ErrorVaultItemDTO(BaseModel):
+    question_id: int
+    topic_id: int
+    topic_code: str
+    topic_title: str
+    content: str
+    options: Dict[str, str]
+    correct_answer: str
+    user_answer: str
+    explanation: str
+    trap_warning: str
+    trap_type: str = Field("TRAP_LOGIC", description="TRAP_LOGIC | TRAP_SYNTAX | TRAP_FORMULA | CARELESS")
+    times_incorrect: int = 1
+
+
+class FlashcardItemDTO(BaseModel):
+    id: int
+    topic_id: int
+    topic_code: str
+    topic_title: str
+    front: str
+    back: str
+    key_insight: str
+    difficulty: str = "MEDIUM"
+    retention_rate: float = 75.0
+
+
+class CrammingCheatSheetDTO(BaseModel):
+    topic_id: int
+    topic_code: str
+    topic_title: str
+    one_page_summary: str
+    must_remember_formulas: List[str] = Field(default_factory=list)
+    top_exam_traps: List[str] = Field(default_factory=list)
+    high_yield_questions: List[AIRemedialQuestionItemDTO] = Field(default_factory=list)
+
+
+# ==========================================
+# 19. MULTI-SUBJECT DISCOVERY & 3-TIER RECOMMENDATION SCHEMAS
+# ==========================================
+class SubjectTopicBriefDTO(BaseModel):
+    id: int
+    code: str
+    title: str
+    description: Optional[str] = None
+    order_index: int = 1
+    difficulty_level: float = 3.0
+
+
+class SubjectListItemDTO(BaseModel):
+    id: int
+    code: str
+    title: str
+    description: Optional[str] = None
+    topics_count: int = 0
+    materials_count: int = 0
+    questions_count: int = 0
+    topics: List[SubjectTopicBriefDTO] = Field(default_factory=list)
+
+
+class Tier1WebResourceDTO(BaseModel):
+    title: str
+    url: str
+    description: Optional[str] = None
+    institution: Optional[str] = "Chính thống"
+    material_type: str = "READING"
+    difficulty_level: float = 3.0
+    is_free: bool = True
+
+
+class Tier2YouTubeVideoDTO(BaseModel):
+    title: str
+    url: str
+    channel: Optional[str] = "YouTube"
+    duration_minutes: Optional[int] = 30
+    level: float = 3.0
+    description: Optional[str] = None
+
+
+class Tier3ScoreStrategyDTO(BaseModel):
+    target_score: float
+    grade_letter: str
+    target_bracket: str
+    feasibility_status: str
+    estimated_study_hours: float
+    daily_commitment_minutes: int
+    exam_prep_milestones: List[str] = Field(default_factory=list)
+    key_focus_topics: List[str] = Field(default_factory=list)
+    action_plan: List[str] = Field(default_factory=list)
+
+
+class RelatedSubjectSuggestionDTO(BaseModel):
+    id: int
+    code: str
+    title: str
+    description: Optional[str] = None
+    topics_count: int = 0
+    relevance_reason: str = "Môn học phù hợp với từ khóa"
+
+
+class SubjectSearchRecommendationResponseDTO(BaseModel):
+    query: str
+    target_score: float
+    matched_subject: SubjectListItemDTO
+    related_subjects: List[RelatedSubjectSuggestionDTO] = Field(default_factory=list)
+    tier1_web_resources: List[Tier1WebResourceDTO] = Field(default_factory=list)
+    tier2_youtube_videos: List[Tier2YouTubeVideoDTO] = Field(default_factory=list)
+    tier3_score_strategy: Tier3ScoreStrategyDTO
+    recommended_path: List[Dict[str, Any]] = Field(default_factory=list)
+
+
+class ActiveLearningSessionDTO(BaseModel):
+    user_id: int
+    subject_id: int
+    topic_id: Optional[int] = None
+    subject_code: Optional[str] = None
+    subject_title: Optional[str] = None
+    message: Optional[str] = "Đã lưu trạng thái học tập thành công"
+
+
+# ==========================================
+# 20. PORTFOLIO & CAPSTONE PROJECTS SCHEMAS
+# ==========================================
+class PortfolioProjectStepDTO(BaseModel):
+    step_number: int
+    title: str
+    description: str
+    code_snippet: Optional[str] = None
+    key_deliverable: str
+
+
+class PortfolioProjectDTO(BaseModel):
+    id: str
+    title: str
+    subject_code: str
+    subject_title: str
+    industry: str
+    difficulty: str
+    estimated_hours: str
+    summary: str
+    business_impact: str
+    tech_stack: List[str]
+    dataset_name: str
+    dataset_url: str
+    dataset_description: str
+    github_starter_url: str
+    colab_starter_url: str
+    cv_bullet_point: str
+    steps: List[PortfolioProjectStepDTO]
 
 
